@@ -1,0 +1,12 @@
+FAIL: Cannot read properties of undefined (reading 'replace')
+TypeError: Cannot read properties of undefined (reading 'replace')
+    at createBetterSQLite3Client (F:\Index\casajavorai\web-app\node_modules\@prisma\adapter-better-sqlite3\dist\index.js:655:22)
+    at PrismaBetterSqlite3AdapterFactory.connect (F:\Index\casajavorai\web-app\node_modules\@prisma\adapter-better-sqlite3\dist\index.js:644:59)
+    at e.connect (F:\Index\casajavorai\web-app\node_modules\@prisma\client\runtime\client.js:57:178)
+    at #s (F:\Index\casajavorai\web-app\node_modules\@prisma\client\runtime\client.js:57:11949)
+    at F:\Index\casajavorai\web-app\node_modules\@prisma\client\runtime\client.js:57:11286
+    at Object.runInChildSpan (F:\Index\casajavorai\web-app\node_modules\@prisma\client\runtime\client.js:65:2516)
+    at ti.runInChildSpan (F:\Index\casajavorai\web-app\node_modules\@prisma\client\runtime\client.js:65:2850)
+    at #i (F:\Index\casajavorai\web-app\node_modules\@prisma\client\runtime\client.js:57:11224)
+    at Dt.request (F:\Index\casajavorai\web-app\node_modules\@prisma\client\runtime\client.js:58:2015)
+    at Object.singleLoader (F:\Index\casajavorai\web-app\node_modules\@prisma\client\runtime\client.js:65:6595)
