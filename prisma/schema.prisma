@@ -8,88 +8,128 @@ datasource db {
 }
 
 model Space {
-  id          String    @id @default(uuid())
-  slug        String    @unique // sala-principal
+  id          String    @id @default(uuid()) @db.Uuid
+  slug        String    @unique
   name        String
   description String?
+  capacity    Int?      // Added missing field
   dimensions  String?
   type        String    // indoor, outdoor
-  hourlyRate  Float
+  hourlyRate  Float     @map("hourly_rate")
   color       String?
-  mapConfig   String?   // JSON string containing x, y, width, height, path
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  image       String?   // Added missing field
+  mapConfig   Json?     @map("map_config")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  
   bookings    Booking[]
+  activities  Activity[] @relation("ActivitySpaces")
+
+  @@map("spaces")
+}
+
+model Contact {
+  id          String    @id @default(uuid()) @db.Uuid
+  name        String
+  email       String?
+  phone       String?
+  metadata    Json?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  
+  bookings    Booking[]
+
+  @@map("contacts")
 }
 
 model Booking {
-  id           String    @id @default(uuid())
+  id           String    @id @default(uuid()) @db.Uuid
   title        String
   description  String?
-  startTime    DateTime
-  endTime      DateTime
-  status       String    @default("pending") // pending, approved, rejected
-  noiseLevel   String    @default("moderate")
-  needsSilence Boolean   @default(false)
+  startTime    DateTime  @map("start_time")
+  endTime      DateTime  @map("end_time")
+  activityType String?   @map("activity_type") // Added missing field
+  status       String    @default("pending")
+  noiseLevel   String    @default("moderate") @map("noise_level")
+  needsSilence Boolean   @default(false) @map("needs_silence")
   exclusive    Boolean   @default(false)
+  adminNotes   String?   @map("admin_notes")   // Added missing field
+  totalPrice   Float?    @map("total_price")   // Added missing field
+  recurrence   Json?
   
-  recurrence   String?   // JSON string describing recurrence pattern
+  userId       String?   @db.Uuid @map("user_id")
   
-  // userId references auth.users in Supabase (no foreign key in Prisma)
-  userId       String
-  
-  spaceId      String
-  space        Space     @relation(fields: [spaceId], references: [id]) // Use slug or id? keeping id for now
+  contactId    String?   @db.Uuid @map("contact_id")
+  contact      Contact?  @relation(fields: [contactId], references: [id])
 
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  spaceId      String    @db.Uuid @map("space_id")
+  space        Space     @relation(fields: [spaceId], references: [id])
+
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  @@map("bookings")
 }
 
 model Activity {
-  id          String   @id @default(uuid())
+  id          String   @id @default(uuid()) @db.Uuid
   title       String
   description String?
-  startDate   DateTime
-  endDate     DateTime? // For multi-day activities
-  startTime   String?   // Store as "HH:mm"
+  startDate   DateTime @map("start_date")
+  endDate     DateTime? @map("end_date")
+  startTime   String?   @map("start_time") // Store as "HH:mm"
   responsible String?
-  imageUrl    String?   // Base64 or URL to compressed WebP
-  videoUrl    String?   // YouTube link
-  instagram   String?
+  imageUrl    String?   @map("image_url")
+  videoUrl    String?   @map("video_url")
+  instagram   String?   @map("instagram_handle")
   email       String?
-  tags        String?   // comma-separated
-  createdAt   DateTime @default(now())
+  tags        String[]  // Array of strings in Postgres
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  spaces      Space[]   @relation("ActivitySpaces")
+
+  @@map("activities")
 }
 
 model Venture {
-  id          String   @id @default(uuid())
-  name        String
-  owner       String?
-  description String?
-  logoUrl     String?  // Base64 or URL to compressed WebP
-  ownerImageUrl String? // Photo of the owner
-  whatsapp    String?
-  instagram   String?
-  facebook    String?
-  website     String?
-  email       String?
-  createdAt   DateTime @default(now())
-  products    Product[]
+  id            String   @id @default(uuid()) @db.Uuid
+  name          String
+  owner         String?
+  description   String?
+  logoUrl       String?  @map("logo_url")
+  ownerImageUrl String?  @map("owner_image_url")
+  whatsapp      String?
+  instagram     String?
+  facebook      String?
+  website       String?
+  email         String?
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  
+  products      Product[]
+
+  @@map("ventures")
 }
 
 model Product {
-  id          String   @id @default(uuid())
+  id          String   @id @default(uuid()) @db.Uuid
   name        String
   description String?
-  price       Float?   // Numeric value
-  currency    String   @default("CRC") // CRC or USD
-  category    String?  // e.g., Clothing, Food, etc.
-  type        String   @default("product") // product or service
-  size        String?  // e.g., S, M, L (for clothes)
-  dimensions  String?  // e.g., 20x30cm
-  imageUrl    String?  // Product photo (WebP)
-  videoUrl    String?  // YouTube link
-  ventureId   String
+  price       Float?
+  currency    String   @default("CRC")
+  category    String?
+  type        String   @default("product")
+  size        String?
+  dimensions  String?
+  imageUrl    String?  @map("image_url")
+  videoUrl    String?  @map("video_url")
+  
+  ventureId   String   @db.Uuid @map("venture_id")
   venture     Venture  @relation(fields: [ventureId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now())
+  
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("products")
 }

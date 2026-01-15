@@ -8,4 +8,4 @@ export { default as venturesService } from './ventures.service';
 export type { LoginCredentials, SignupData, AuthResponse } from './auth.service';
 export type { Booking, CreateBookingData, UpdateBookingData, BookingFilters } from './bookings.service';
 export type { Activity, CreateActivityData, UpdateActivityData } from './activities.service';
-export type { Venture, CreateVentureData, UpdateVentureData } from './ventures.service';
+export type { CreateVentureData, UpdateVentureData } from './ventures.service';

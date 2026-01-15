@@ -50,4 +50,20 @@ function AvatarFallback({
   )
 }
 
-export { Avatar, AvatarImage, AvatarFallback }
+function AvatarGroup({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-avatar-group
+      className={cn("flex items-center", className)}
+      {...props}
+    >
+      {children}
+    </div>
+  )
+}
+
+export { Avatar, AvatarImage, AvatarFallback, AvatarGroup }

@@ -3,6 +3,7 @@ import { Space, User } from "@/types";
 export const SPACES: Space[] = [
     {
         id: 'sala',
+        slug: 'sala',
         name: 'Sala Principal',
         description: 'Espacio cerrado ideal para talleres, conferencias y reuniones.',
         dimensions: '4x12m',
@@ -13,6 +14,7 @@ export const SPACES: Space[] = [
     },
     {
         id: 'verde',
+        slug: 'verde',
         name: 'Espacio Verde Trasero',
         description: 'Área al aire libre perfecta para actividades recreativas y contacto con la naturaleza.',
         dimensions: 'Variable',
@@ -23,6 +25,7 @@ export const SPACES: Space[] = [
     },
     {
         id: 'planche',
+        slug: 'planche',
         name: 'Planché Techado',
         description: 'Espacio amplio techado con iluminación, ideal para danza y ensayos.',
         dimensions: '10x25m',
@@ -33,6 +36,7 @@ export const SPACES: Space[] = [
     },
     {
         id: 'multiuso',
+        slug: 'multiuso',
         name: 'Sala Multiuso',
         description: 'Espacio flexible para actividades variadas.',
         dimensions: '6x5m',

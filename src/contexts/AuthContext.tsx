@@ -126,6 +126,17 @@ export function getUserRole(user: SupabaseUser | null): string {
   return user?.user_metadata?.role || "gestor";
 }
 
+export async function getUserById(id: string): Promise<SupabaseUser | null> {
+  const supabase = createClient();
+  const { data, error } = await supabase.auth.admin.getUserById(id);
+
+  if (error || !data.user) {
+    return null;
+  }
+
+  return data.user;
+}
+
 // Helper function to get user name from user_metadata
 export function getUserName(user: SupabaseUser | null): string {
   return user?.user_metadata?.name || user?.email?.split("@")[0] || "Usuario";

@@ -26,6 +26,13 @@ export function useBookings(filters?: BookingFilters) {
   });
 }
 
+export function useUsers() {
+  return useQuery({
+    queryKey: ["users"] as const,
+    queryFn: () => bookingsService.getUsersMap(),
+  });
+}
+
 export function useBooking(id: string) {
   return useQuery({
     queryKey: bookingKeys.detail(id),

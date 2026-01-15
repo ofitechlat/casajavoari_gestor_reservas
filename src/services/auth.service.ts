@@ -60,6 +60,11 @@ class AuthService {
     return response.data;
   }
 
+  async getUserById(id: string): Promise<SupabaseUser | null> {
+    const response = await axiosClient.get<SupabaseUser>(`/rest/v1/users/${id}`);
+    return response.data;
+  }
+
   /**
    * Refresh access token
    */

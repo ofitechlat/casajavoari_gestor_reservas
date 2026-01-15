@@ -53,8 +53,8 @@ export function AppSidebar() {
                         <UserIcon className="w-4 h-4" />
                     </div>
                     <div className="flex-1 overflow-hidden">
-                        <p className="text-sm font-medium truncate">{user?.name}</p>
-                        <p className="text-xs text-muted-foreground capitalize">{user?.role}</p>
+                        <p className="text-sm font-medium truncate">{user?.user_metadata?.name || user?.email}</p>
+                        <p className="text-xs text-muted-foreground capitalize">{user?.user_metadata?.role || 'user'}</p>
                     </div>
                 </div>
                 <button

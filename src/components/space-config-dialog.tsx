@@ -22,6 +22,8 @@ export function SpaceConfigDialog({ open, onOpenChange }: SpaceConfigDialogProps
     const selectedSpace = spaces.find(s => s.id === selectedId);
 
     const updateSpace = (id: SpaceId, updates: Partial<Space> | Partial<Space["mapConfig"]>) => {
+        if (!updates) return;
+
         setSpaces(prev => prev.map(s => {
             if (s.id !== id) return s;
 
@@ -29,9 +31,9 @@ export function SpaceConfigDialog({ open, onOpenChange }: SpaceConfigDialogProps
             const isMapConfig = 'x' in updates || 'y' in updates || 'width' in updates || 'height' in updates;
 
             if (isMapConfig) {
-                return { ...s, mapConfig: { ...s.mapConfig, ...updates } };
+                return { ...s, mapConfig: { ...s.mapConfig, ...updates as Partial<Space["mapConfig"]> } } as Space;
             }
-            return { ...s, ...updates };
+            return { ...s, ...updates } as Space;
         }));
     };
 
@@ -39,6 +41,7 @@ export function SpaceConfigDialog({ open, onOpenChange }: SpaceConfigDialogProps
         const newId = `space-${Date.now()}` as SpaceId;
         const newSpace: Space = {
             id: newId,
+            slug: newId,
             name: "Nuevo Espacio",
             description: "",
             dimensions: "0x0m",
@@ -140,19 +143,19 @@ export function SpaceConfigDialog({ open, onOpenChange }: SpaceConfigDialogProps
                                         <div className="grid grid-cols-2 gap-3">
                                             <div className="space-y-1">
                                                 <label className="text-xs font-medium">Posición X</label>
-                                                <Input type="number" value={selectedSpace.mapConfig.x} onChange={e => updateSpace(selectedSpace.id, { x: Number(e.target.value) })} />
+                                                <Input type="number" value={selectedSpace.mapConfig?.x || 0} onChange={e => updateSpace(selectedSpace.id, { x: Number(e.target.value) })} />
                                             </div>
                                             <div className="space-y-1">
                                                 <label className="text-xs font-medium">Posición Y</label>
-                                                <Input type="number" value={selectedSpace.mapConfig.y} onChange={e => updateSpace(selectedSpace.id, { y: Number(e.target.value) })} />
+                                                <Input type="number" value={selectedSpace.mapConfig?.y || 0} onChange={e => updateSpace(selectedSpace.id, { y: Number(e.target.value) })} />
                                             </div>
                                             <div className="space-y-1">
                                                 <label className="text-xs font-medium">Ancho</label>
-                                                <Input type="number" value={selectedSpace.mapConfig.width} onChange={e => updateSpace(selectedSpace.id, { width: Number(e.target.value) })} />
+                                                <Input type="number" value={selectedSpace.mapConfig?.width || 0} onChange={e => updateSpace(selectedSpace.id, { width: Number(e.target.value) })} />
                                             </div>
                                             <div className="space-y-1">
                                                 <label className="text-xs font-medium">Alto</label>
-                                                <Input type="number" value={selectedSpace.mapConfig.height} onChange={e => updateSpace(selectedSpace.id, { height: Number(e.target.value) })} />
+                                                <Input type="number" value={selectedSpace.mapConfig?.height || 0} onChange={e => updateSpace(selectedSpace.id, { height: Number(e.target.value) })} />
                                             </div>
                                         </div>
                                     </div>

@@ -1,12 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import venturesService, {
-  type Venture,
   type CreateVentureData,
   type UpdateVentureData,
-  type Product,
   type CreateProductData,
   type UpdateProductData,
 } from "@/services/ventures.service";
+import type { Venture, Product } from "@/types";
 import { toast } from "sonner";
 
 // Query Keys
@@ -30,7 +29,7 @@ export function useVentures() {
 export function useVenture(id: string, includeProducts = true) {
   return useQuery({
     queryKey: ventureKeys.detail(id),
-    queryFn: () => venturesService.getVentureById(id, includeProducts),
+    queryFn: () => venturesService.getVentureById(id),
     enabled: !!id,
   });
 }

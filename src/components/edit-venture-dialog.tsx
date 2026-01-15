@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { compressImageToWebP } from "@/lib/image-utils";
 import { useUpdateVenture } from "@/hooks/queries";
-import type { Venture } from "@/services/ventures.service";
+import type { Venture } from "@/types";
 import { toast } from "sonner";
 
 interface EditVentureDialogProps {

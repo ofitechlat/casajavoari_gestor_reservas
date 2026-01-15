@@ -62,7 +62,7 @@ axiosClient.interceptors.response.use(
           console.error('Server error:', error.response.data);
           break;
         default:
-          console.error('API error:', error.response.data);
+          console.error(`API error (${error.response.status}) on ${error.config.method} ${error.config.url}:`, error.response.data || error.message);
       }
     } else if (error.request) {
       // Request was made but no response received
